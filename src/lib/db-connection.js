@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import { DB_URL } from "../app/config";
 
-const client = new MongoClient(DB_URL)
+export const client = new MongoClient(DB_URL)
 
 export async function getSortedPostsData() {
     try {
