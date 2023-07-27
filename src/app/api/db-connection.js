@@ -1,5 +1,5 @@
-import { MongoClient } from "mongodb";
-import { DB_URL } from "../app/config";
+import { MongoClient, ObjectId } from "mongodb";
+import { DB_URL } from "../config";
 
 export const client = new MongoClient(DB_URL)
 
@@ -21,7 +21,18 @@ export async function postData(data) {
         const collection = db.collection('post')
         await collection.insertOne({post: data})
         console.log('document was inserted');
-    } catch (err) {
-        console.error(err)
+    } catch (e) {
+        console.error(e)
     } 
+}
+
+export async function getPost(id) {
+    try {
+        await client.connect()
+        const db = client.db('my-blog')
+        const collection = db.collection('post').findOne({_id: new ObjectId(id)})
+        return collection
+    } catch (e) {
+        console.error(e)
+    }
 }

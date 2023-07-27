@@ -15,3 +15,6 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+
+/* script que recorra la carpeta app y detecte las paginas
+map que recorra el array y liste las paginas en la navbar */

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getSortedPostsData, postData } from "../../lib/db-connection";
+import { getSortedPostsData, postData } from "./db-connection";
  
 export async function GET() {
 
@@ -14,10 +14,10 @@ export async function POST(req) {
     return NextResponse.json({res: 200})
 }
 
-export async function PUT(req) {
+export async function PUT() {
     return NextResponse.json({res: 200})
 }
 
-export async function DELETE(req) {
+export async function DELETE() {
     return NextResponse.json({res: 200})
 }
