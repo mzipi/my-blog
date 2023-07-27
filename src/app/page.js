@@ -7,7 +7,7 @@ export default async function Home() {
     const posts = await getSortedPostsData()
 
     return (
-        <div>
+        <>
             <Header></Header>
             <section className="bg-white dark:bg-gray-900">
                 <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
@@ -35,6 +35,6 @@ export default async function Home() {
                 </div>
             </section>
             <Footer></Footer>
-        </div>
+        </>
     )
 }
