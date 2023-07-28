@@ -1,18 +1,19 @@
-import { getPost } from "@/app/api/db-connection"
-import SendComment from "./SendComment"
+import { getPost } from "@/app/api/db-connection";
+import SendComment from "./SendComment";
 
-export default async function Comments(props) {
+interface Props {
+  postId: string;
+}
 
-    const paragraph = await getPost(props.postId)
+export default async function Comments(props: Props): Promise<JSX.Element> {
+  const paragraph = await getPost(props.postId);
 
-    return(
-        <div>
-            {paragraph.comments.map((element) => {
-                return (
-                    <small key={element.id}>{element.comment}</small>
-                )
-            })}
-            <SendComment></SendComment>
-        </div>
-    )
+  return (
+    <div>
+      {paragraph.comments.map((element) => {
+        return <small key={element.id}>{element.comment}</small>;
+      })}
+      <SendComment></SendComment>
+    </div>
+  );
 }
