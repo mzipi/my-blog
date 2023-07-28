@@ -1,16 +1,21 @@
-'use client'
+import React, { useEffect } from 'react';
 
-import { useEffect } from 'react'
-
-export default function Error({ error, reset }) {
-    useEffect(() => {
-        console.error(error)
-    }, [error])
-
-    return(
-        <div>
-            <h2>Something went wrong!</h2>
-            <button onClick={() => reset()}>Try again</button>
-        </div>
-    )
+interface ErrorProps {
+  error: string;
+  reset: () => void;
 }
+
+const Error: React.FC<ErrorProps> = ({ error, reset }) => {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
+  return (
+    <div>
+      <h2>Something went wrong!</h2>
+      <button onClick={() => reset()}>Try again</button>
+    </div>
+  );
+};
+
+export default Error;
