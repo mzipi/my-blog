@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 import { DB_URL } from "../config";
 
-export const client: MongoClient = new MongoClient(DB_URL);
+export const client = new MongoClient(DB_URL);
 
 export async function getSortedPostsData(): Promise<any> {
     try {
@@ -14,7 +14,7 @@ export async function getSortedPostsData(): Promise<any> {
     }
 }
 
-export async function postData(data: any): Promise<void> {
+export async function postData(data: {title: string; post: string; tag: string}): Promise<void> {
     try {
         await client.connect();
         const db = client.db('my-blog');
