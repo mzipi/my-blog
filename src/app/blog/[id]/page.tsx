@@ -3,7 +3,7 @@ import { Header } from "@/app/components/Header"
 import { getPost } from "@/app/api/db-connection"
 import Comments from "./comments/page"
 
-export default async function Post({ params }) {
+export default async function Post({params}: {params: {id: string}}) {
 
     const { id } = params
     const paragraph = await getPost(id)

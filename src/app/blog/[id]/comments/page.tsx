@@ -10,7 +10,7 @@ export default async function Comments(props: Props): Promise<JSX.Element> {
 
   return (
     <div>
-      {paragraph.comments.map((element: { id: string, comment: string}) => {
+      {paragraph.comments.map((element: { id: string; comment: string}) => {
         return <small key={element.id}>{element.comment}</small>;
       })}
       <SendComment></SendComment>
