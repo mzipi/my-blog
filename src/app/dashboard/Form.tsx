@@ -4,7 +4,8 @@ export function Form() {
     
     const submitForm = (e: any) => {
         e.preventDefault()
-        const textData: string = document.getElementById("editor").value
+        const editor = document.getElementById("editor")
+        const textData: string = editor.value
         fetch("/api", {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
