@@ -4,12 +4,11 @@ export function Form() {
     
     const submitForm = (e: any) => {
         e.preventDefault()
-        const editor = document.getElementById("editor")
-        const textData: string = editor.value
+        const editor: any = document.getElementById("editor")
         fetch("/api", {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(textData)
+            body: JSON.stringify(editor.value)
         })
     }
 
