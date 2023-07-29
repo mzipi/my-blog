@@ -2,7 +2,7 @@
 
 export function Form() {
     
-    const submitForm = (e) => {
+    const submitForm = (e: any) => {
         e.preventDefault()
         const textData: string = document.getElementById("editor").value
         fetch("/api", {
