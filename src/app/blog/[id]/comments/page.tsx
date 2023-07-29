@@ -1,4 +1,4 @@
-import { getPost } from "@/app/api/db-connection";
+import { getPost } from "@/app/lib/db-connection";
 import SendComment from "./SendComment";
 
 interface Props {

@@ -1,1 +1,1 @@
-export const DB_URL: string = process.env.DB_URL;
+export const DB_URL = process.env.DB_URL

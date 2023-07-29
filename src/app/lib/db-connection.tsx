@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 import { DB_URL } from "../config";
 
-export const client = new MongoClient(DB_URL);
+export const client: MongoClient = new MongoClient(DB_URL);
 
 export async function getSortedPostsData(): Promise<any> {
     try {

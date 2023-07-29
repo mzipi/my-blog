@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSortedPostsData, postData } from "./db-connection";
+import { getSortedPostsData, postData } from "../lib/db-connection";
 
 export async function GET(): Promise<NextResponse> {
     const res = await getSortedPostsData();
