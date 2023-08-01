@@ -1,11 +1,7 @@
 import { getPost } from "@/app/lib/db-connection";
 import SendComment from "./SendComment";
 
-type Props = {
-  postId: string;
-}
-
-export default async function Comments(props: Props): Promise<JSX.Element> {
+export default async function Comments(props: any): Promise<JSX.Element> {
   const paragraph = await getPost(props.postId);
 
   return (
