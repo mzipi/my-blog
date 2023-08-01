@@ -5,7 +5,7 @@ interface Props {
   postId: string;
 }
 
-export default async function Comments(props: Props): Promise<JSX.Element> {
+export default async function Comments(props: {postId: string}): Promise<JSX.Element> {
   const paragraph = await getPost(props.postId);
 
   return (
