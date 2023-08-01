@@ -39,12 +39,15 @@ export function Form() {
                         <div className="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </div>
-                <div className="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+                <div className="px-4 py-3 rounded-b-lg">
+                    <textarea className="align-middle post rounded-lg w-1/3 h-8 px-2 py-1 text-sm border-0 bg-gray-800 focus:ring-0 text-white placeholder-gray-400" placeholder="Write a title" required></textarea>
+                </div>
+                <div className="px-4 py-2 rounded-b-lg bg-gray-800">
                     <label htmlFor="editor" className="sr-only">Publish post</label>
-                    <textarea id="editor" className="w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write an article..." required></textarea>
+                    <textarea id="editor" className="post w-full h-96 px-2 text-sm border-0 bg-gray-800 focus:ring-0 text-white placeholder-gray-400" placeholder="Write an article..." required></textarea>
                 </div>
             </div>
-            <button type="submit" className="px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+            <button type="submit" className="px-5 py-2.5 mt-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 Publish post
             </button>
         </form>

@@ -13,9 +13,11 @@ export async function POST(req: Request): Promise<NextResponse> {
 }
 
 export async function PUT(): Promise<NextResponse> {
+    // editar post
     return NextResponse.json({ res: 200 });
 }
 
 export async function DELETE(): Promise<NextResponse> {
+    // eliminar post
     return NextResponse.json({ res: 200 });
 }
