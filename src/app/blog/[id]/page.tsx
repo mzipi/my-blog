@@ -11,8 +11,8 @@ export default async function Post({params}: {params: {id: string}}) {
     return(
         <div>
             <Header></Header>
-            <h1>{paragraph.title}</h1>
-            <p>{paragraph.post}</p>
+            <h1 className="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">{paragraph.title}</h1>
+            <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">{paragraph.post}</p>
             <Comments postId={id}></Comments>
             <Footer></Footer>
         </div>

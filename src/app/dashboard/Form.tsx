@@ -3,18 +3,22 @@
 export function Form() {
     
     const submitForm = (e: any) => {
-        e.preventDefault()
         const editor: any = document.getElementById("editor")
+        const title: any = document.getElementById("title")
         fetch("/api", {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(editor.value)
+            body: JSON.stringify({
+                title: title.value,
+                post: editor.value,
+                tag: "tag"
+            })
         })
     }
 
     return (
         <form onSubmit={submitForm} className="py-8 px-4 mx-96 lg:py-16">
-            <div className="border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 ">
+            <div className="border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                 <div className="px-3 py-2 border-b dark:border-gray-600">
                     <div className="divide-gray-200 sm:divide-x dark:divide-gray-600">
                         <div className="space-x-1 sm:pr-4">
@@ -40,7 +44,7 @@ export function Form() {
                     </div>
                 </div>
                 <div className="px-4 py-3 rounded-b-lg">
-                    <textarea className="align-middle post rounded-lg w-1/3 h-8 px-2 py-1 text-sm border-0 bg-gray-800 focus:ring-0 text-white placeholder-gray-400" placeholder="Write a title" required></textarea>
+                    <textarea id="title" className="align-middle post rounded-lg w-1/3 h-8 px-2 py-1 text-sm border-0 bg-gray-800 focus:ring-0 text-white placeholder-gray-400" placeholder="Write a title" required></textarea>
                 </div>
                 <div className="px-4 py-2 rounded-b-lg bg-gray-800">
                     <label htmlFor="editor" className="sr-only">Publish post</label>

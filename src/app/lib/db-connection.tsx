@@ -19,8 +19,7 @@ export async function postData(data: {title: string; post: string; tag: string})
         await client.connect();
         const db = client.db('my-blog');
         const collection = db.collection('post');
-        await collection.insertOne({post: data});
-        console.log('document was inserted');
+        await collection.insertOne(data);
     } catch (e) {
         console.error(e);
     } 
