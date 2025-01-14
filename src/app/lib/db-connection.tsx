@@ -35,3 +35,5 @@ export async function getPost(id: string): Promise<any> {
         console.error(e);
     }
 }
+
+export default getPost;
