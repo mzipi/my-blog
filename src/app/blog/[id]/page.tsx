@@ -2,7 +2,7 @@ import { Footer } from "@/app/components/Footer"
 import { Header } from "@/app/components/Header"
 import { getPost } from "@/app/lib/db-connection"
 import Comments from "./comments/page"
-
+/*
 export default async function Post(params: { id: any }) {
 
     const { id } = params
@@ -18,3 +18,4 @@ export default async function Post(params: { id: any }) {
         </div>
     )
 }
+*/
