@@ -25,7 +25,7 @@ export async function postData(data: {title: string; post: string; tag: string})
     } 
 }
 
-export async function getPost(id: string): Promise<any> {
+export async function getPost(id: any): Promise<any> {
     try {
         await client.connect();
         const db = client.db('my-blog');
