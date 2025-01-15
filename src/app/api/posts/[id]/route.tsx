@@ -2,6 +2,25 @@ import { NextResponse } from 'next/server';
 import clientPromise from "../../../lib/mongo";
 import { ObjectId } from "mongodb";
 
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    try {
+        const client = await clientPromise;
+        const db = client.db('my-blog');
+        const post = await db.collection("post").findOne({ _id: new ObjectId(params.id) });
+        
+        if (!post) {
+            return NextResponse.json({ message: "Post no encontrado" }, { status: 404 });
+        }
+        
+        return NextResponse.json(post);
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
+    }
+}
+
+
+
 /*
 export async function getSortedPostsData(): Promise<any> {
     try {
@@ -40,22 +59,6 @@ export default getPost;
 */
 
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-    try {
-        const client = await clientPromise;
-        const db = client.db('my-blog');
-        const post = await db.collection("post").findOne({ _id: new ObjectId(params.id) });
-        
-        if (!post) {
-            return NextResponse.json({ message: "Post no encontrado" }, { status: 404 });
-        }
-        
-        return NextResponse.json(post);
-    } catch (error) {
-        console.error("Error al obtener el post:", error);
-        return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
-    }
-}
                 
 /*
 export async function POST(req: Request): Promise<NextResponse> {
