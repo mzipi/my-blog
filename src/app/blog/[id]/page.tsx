@@ -21,7 +21,7 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
           <Header></Header>
           <h1 className="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">{post.title}</h1>
           <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">{post.post}</p>
-          <Comments postId={post.id}></Comments>
+          {/*<Comments postId={post.id}></Comments>*/}
           <Footer></Footer>
       </div>
   )
