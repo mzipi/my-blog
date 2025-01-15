@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: { id: string } }): Promise<NextResponse> {
     try {
         const client = await clientPromise;
         const db = client.db('my-blog');
@@ -18,6 +18,9 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
     }
 }
+
+
+
 
 /*
 export async function getSortedPostsData(): Promise<any> {
