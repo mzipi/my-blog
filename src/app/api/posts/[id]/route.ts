@@ -3,28 +3,22 @@ import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const { id } = params; // Desestructuramos el id del objeto params
     try {
-      const client = await clientPromise; // Conexión a la base de datos
-      const db = client.db('my-blog');
-  
-      // Validar que el ID es un ObjectId válido
-      if (!ObjectId.isValid(params.id)) {
-        return NextResponse.json({ message: 'ID no válido' }, { status: 400 });
-      }
-  
-      const post = await db.collection('post').findOne({ _id: new ObjectId(params.id) });
-  
-      if (!post) {
-        return NextResponse.json({ message: 'Post no encontrado' }, { status: 404 });
-      }
-  
-      return NextResponse.json(post);
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ message: 'Error al recuperar el post' }, { status: 500 });
-    }
-  }
+        const client = await clientPromise; // Esperamos a que se resuelva la promesa del cliente
+        const db = client.db('my-blog'); // Nombre de tu base de datos
+        const collection = await db.collection('post').findOne({ _id: new ObjectId(id) });
+        
+        if (!collection) {
+            return NextResponse.json({ message: 'Post not found' }, { status: 404 });
+        }
 
+        return NextResponse.json(collection, { status: 200 });
+    } catch (e) {
+        console.error(e);
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    }
+}
 
 
 /*
