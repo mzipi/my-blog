@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import clientPromise from "../../../lib/mongo";
+import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
-      const client = await clientPromise; // Asegúrate de que clientPromise esté configurado correctamente
+      const client = await clientPromise; // Conexión a la base de datos
       const db = client.db('my-blog');
-      
-      // Verifica que params.id es un string válido
+  
+      // Validar que el ID es un ObjectId válido
       if (!ObjectId.isValid(params.id)) {
         return NextResponse.json({ message: 'ID no válido' }, { status: 400 });
       }
