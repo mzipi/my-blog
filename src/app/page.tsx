@@ -1,10 +1,10 @@
-import { getSortedPostsData, client } from "./lib/mongo";
+//import { getSortedPostsData, client } from "./lib/mongo";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
 export default async function Home() {
 
-    const posts = await getSortedPostsData()
+    // const posts = await getSortedPostsData()
 
     return (
         <>
@@ -12,7 +12,7 @@ export default async function Home() {
             <section className="bg-white dark:bg-gray-900">
                 <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
                     <div className="grid md:grid-cols-2 gap-8">
-                        {posts.map((post: {_id: string; title: string; post: string; tag: string}) => {
+                        {/*posts.map((post: {_id: string; title: string; post: string; tag: string}) => {
                             return (
                                 <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12" key={post._id}>
                                     <a href={post.tag} className="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
@@ -30,11 +30,11 @@ export default async function Home() {
                                     </a>
                                 </div>
                             )
-                        })}
+                        })*/}
                     </div>
                 </div>
             </section>
-            {client.close()}
+            {/*client.close()*/}
             <Footer></Footer>
         </>
     )
