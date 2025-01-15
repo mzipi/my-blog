@@ -4,14 +4,14 @@ import { getPost } from "@/app/lib/db-connection"
 import Comments from "./comments/page"
 
 interface PostProps {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
+  };
 }
 
 export default async function Post({ params }: PostProps) {
 
-    const { id } = await params
+    const { id } = params
     const paragraph = await getPost(id)
 
     return(
@@ -19,7 +19,7 @@ export default async function Post({ params }: PostProps) {
             <Header></Header>
             <h1 className="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">{paragraph.title}</h1>
             <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">{paragraph.post}</p>
-            <Comments postId={id}></Comments>
+            <Comments /*postId={id}*/></Comments>
             <Footer></Footer>
         </div>
     )
