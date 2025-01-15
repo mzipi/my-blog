@@ -14,6 +14,10 @@ export default async function Post({ params }: PostProps) {
     const { id } = params
     const paragraph = await getPost(id)
 
+    if (!paragraph) {
+      return <p>Post not found</p>;
+    }
+
     return(
         <div>
             <Header></Header>
