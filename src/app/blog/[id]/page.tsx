@@ -1,6 +1,6 @@
 import { Footer } from "@/app/components/Footer"
 import { Header } from "@/app/components/Header"
-import Comments from "./comments/page"
+// import Comments from "./comments/page"
 
 interface PostProps {
   params: {

@@ -1,3 +1,4 @@
+/*
 import { getPost } from "@/app/lib/mongo";
 import SendComment from "./SendComment";
 
@@ -17,3 +18,4 @@ export default async function Comments(props: any): Promise<JSX.Element> {
     </div>
   )
 }
+*/
