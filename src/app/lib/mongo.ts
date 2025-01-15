@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 
 const uri = process.env.DB_URL;
 const options = {};
@@ -7,7 +7,7 @@ let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 if (!uri) {
-    throw new Error("Por favor, añade la variable DB_URL a tu archivo .env.local");
+    throw new Error("Por favor, añade la variable MONGO_URI a tu archivo .env.local");
 }
 
 client = new MongoClient(uri, options);

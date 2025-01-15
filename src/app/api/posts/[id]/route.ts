@@ -2,24 +2,22 @@ import { NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET(request: Request, context: { params: { id: string } }) {
-    const { id } = context.params; // Accedemos directamente a params desde context
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
-        const client = await clientPromise; // Esperamos a que se resuelva la promesa del cliente
-        const db = client.db('my-blog'); // Nombre de tu base de datos
-        const collection = await db.collection('post').findOne({ _id: new ObjectId(id) });
+        const client = await clientPromise;
+        const db = client.db('my-blog');
+        const post = await db.collection("post").findOne({ _id: new ObjectId(params.id) });
         
-        if (!collection) {
-            return NextResponse.json({ message: 'Post not found' }, { status: 404 });
+        if (!post) {
+            return NextResponse.json({ message: "Post no encontrado" }, { status: 404 });
         }
-
-        return NextResponse.json(collection, { status: 200 });
-    } catch (e) {
-        console.error(e);
-        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+        
+        return NextResponse.json(post);
+    } catch (error) {
+        console.error("Error al obtener el post:", error);
+        return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
     }
 }
-
 
 /*
 export async function getSortedPostsData(): Promise<any> {
@@ -58,7 +56,7 @@ export async function getPost(id: string) {
 export default getPost;
 */
 
-
+// ----------------------------------------------------------------------------
                 
 /*
 export async function POST(req: Request): Promise<NextResponse> {
