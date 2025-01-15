@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-    const { id } = params; // Desestructuramos el id del objeto params
+export async function GET(request: Request, context: { params: { id: string } }) {
+    const { id } = context.params; // Accedemos directamente a params desde context
     try {
         const client = await clientPromise; // Esperamos a que se resuelva la promesa del cliente
         const db = client.db('my-blog'); // Nombre de tu base de datos
