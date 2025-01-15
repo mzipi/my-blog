@@ -29,7 +29,7 @@ export async function getPost(id: string): Promise<any> {
     try {
         await client.connect();
         const db = client.db('my-blog');
-        const collection = db.collection('post').findOne({_id: new ObjectId(id)});
+        const collection = await db.collection('post').findOne({_id: new ObjectId(id)});
         return collection;
     } catch (e) {
         console.error(e);
