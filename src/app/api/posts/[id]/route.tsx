@@ -4,20 +4,26 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
-        const client = await clientPromise;
-        const db = client.db('my-blog');
-        const post = await db.collection("post").findOne({ _id: new ObjectId(params.id) });
-        
-        if (!post) {
-            return NextResponse.json({ message: "Post no encontrado" }, { status: 404 });
-        }
-        
-        return NextResponse.json(post);
+      const client = await clientPromise; // Asegúrate de que clientPromise esté configurado correctamente
+      const db = client.db('my-blog');
+      
+      // Verifica que params.id es un string válido
+      if (!ObjectId.isValid(params.id)) {
+        return NextResponse.json({ message: 'ID no válido' }, { status: 400 });
+      }
+  
+      const post = await db.collection('post').findOne({ _id: new ObjectId(params.id) });
+  
+      if (!post) {
+        return NextResponse.json({ message: 'Post no encontrado' }, { status: 404 });
+      }
+  
+      return NextResponse.json(post);
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
+      console.error(error);
+      return NextResponse.json({ message: 'Error al recuperar el post' }, { status: 500 });
     }
-}
+  }
 
 
 
