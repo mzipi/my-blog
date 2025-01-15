@@ -1,6 +1,6 @@
 import { Footer } from "@/app/components/Footer"
 import { Header } from "@/app/components/Header"
-import { getPost } from "@/app/lib/db-connection"
+import { getPost } from "@/app/lib/mongo"
 import Comments from "./comments/page"
 
 interface PostProps {

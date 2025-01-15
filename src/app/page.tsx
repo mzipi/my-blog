@@ -1,4 +1,4 @@
-import { getSortedPostsData, client } from "./lib/db-connection";
+import { getSortedPostsData, client } from "./lib/mongo";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
