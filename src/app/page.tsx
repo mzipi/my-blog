@@ -1,10 +1,36 @@
-import { GET } from './api/posts/route';
+"use client"
+
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { useEffect, useState } from 'react';
 
-export default async function Home() {
+interface Post {
+    _id: string;
+    title: string;
+    post: string;
+    tag: string;
+}
 
-    const posts = await GET() ?? [];
+export default function Home() {
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const response = await fetch('/api/posts');
+            if (response.ok) {
+                const data = await response.json();
+                setPosts(data);
+            } else {
+                console.error('Error fetching posts');
+            }
+            setLoading(false);
+        };
+
+        fetchPosts();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
 
     return (
         <>

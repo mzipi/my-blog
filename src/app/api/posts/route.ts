@@ -23,15 +23,11 @@ export async function POST(req: Request) {
 export async function GET() {
     try {
         const client = await clientPromise;
-        const db = client.db('my-blog');
-        const collection = await db.collection('post').find().toArray();
-        return collection.map(({ _id, title, post, tag }) => ({
-            _id: _id.toString(),
-            title,
-            post,
-            tag,
-        }));
-    } catch (e) {
-        console.error(e);
-    } 
+        const db = client.db("my-blog");
+        const posts = await db.collection("entries").find({}).toArray();
+
+        return NextResponse.json(posts, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
 }
