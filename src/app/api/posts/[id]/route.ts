@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongo";
+import { ObjectId } from "mongodb";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: { id: string } }) {
     try {
         const client = await clientPromise;
         const db = client.db("my-blog");
-        const post = await db.collection("entries").findOne({ _id: params.id });
+        const post = await db.collection("entries").findOne({ _id: new ObjectId(context.params.id) });
 
         if (!post) {
             return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -16,7 +17,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
-
 
 /*
 export async function getSortedPostsData(): Promise<any> {
