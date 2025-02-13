@@ -1,21 +1,21 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET(req: Request, context: { params: { id: string } }) {
+export async function GET() {
     try {
         const client = await clientPromise;
-        const db = client.db("my-blog");
-        const post = await db.collection("entries").findOne({ _id: new ObjectId(context.params.id) });
-
-        if (!post) {
-            return NextResponse.json({ error: "Post not found" }, { status: 404 });
-        }
-
-        return NextResponse.json(post, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-    }
+        const db = client.db('my-blog');
+        const collection = await db.collection('entries').find().toArray();
+        return collection.map(({ ObjectId, title, post, tag }) => ({
+            _id: ObjectId.toString(),
+            title,
+            post,
+            tag,
+        }));
+    } catch (e) {
+        console.error(e);
+    } 
 }
 
 /*
@@ -53,10 +53,16 @@ export async function getPost(id: string) {
 }
 
 export default getPost;
-
+*/
 
 // ----------------------------------------------------------------------------
-
+                
+/*
+export async function POST(req: Request): Promise<NextResponse> {
+    const res = await req.json();
+    await postData(res);
+    return NextResponse.json({ res: 200 });
+}
 
 export async function PUT(): Promise<NextResponse> {
     // editar post
