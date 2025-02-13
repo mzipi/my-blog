@@ -2,28 +2,21 @@ import { NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET(request: Request, {params}: {params: Promise<{ id: string }>}): Promise<NextResponse> {
+export async function GET() {
     try {
-        const id = (await params).id;
         const client = await clientPromise;
         const db = client.db('my-blog');
-        const post = await db.collection("post").findOne({ _id: new ObjectId(id) });
-        
-        if (!post) {
-            return NextResponse.json({ message: "Post no encontrado" }, { status: 404 });
-        }
-        
-        return NextResponse.json(post);
-    } catch (error) {
-        console.error("Error al obtener el post:", error);
-        return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
-    }
+        const collection = await db.collection('entries').find().toArray();
+        return collection.map(({ _id, title, post, tag }) => ({
+            _id: _id.toString(),
+            title,
+            post,
+            tag,
+        }));
+    } catch (e) {
+        console.error(e);
+    } 
 }
-
-
-
-
-
 
 /*
 export async function getSortedPostsData(): Promise<any> {
@@ -60,16 +53,10 @@ export async function getPost(id: string) {
 }
 
 export default getPost;
-*/
+
 
 // ----------------------------------------------------------------------------
-                
-/*
-export async function POST(req: Request): Promise<NextResponse> {
-    const res = await req.json();
-    await postData(res);
-    return NextResponse.json({ res: 200 });
-}
+
 
 export async function PUT(): Promise<NextResponse> {
     // editar post

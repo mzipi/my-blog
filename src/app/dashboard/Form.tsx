@@ -5,7 +5,7 @@ export function Form() {
     const submitForm = (e: any) => {
         const editor: any = document.getElementById("editor")
         const title: any = document.getElementById("title")
-        fetch("/api", {
+        fetch("/api/posts", {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -15,6 +15,7 @@ export function Form() {
             })
         })
     }
+
 
     return (
         <form onSubmit={submitForm} className="py-8 px-4 mx-96 lg:py-16">
