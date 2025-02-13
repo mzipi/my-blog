@@ -1,6 +1,6 @@
-import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongo';
+import { ObjectId } from 'mongodb';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
@@ -18,6 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
+
 
 /*
 export async function getSortedPostsData(): Promise<any> {
