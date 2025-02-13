@@ -11,7 +11,6 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
         const client = await clientPromise;
         const db = client.db("my-blog");
         
-        // Asegurarse de que params.id es una cadena válida
         if (!ObjectId.isValid(params.id)) {
             return NextResponse.json({ error: "Invalid ObjectId format" }, { status: 400 });
         }
