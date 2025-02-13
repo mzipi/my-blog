@@ -1,4 +1,4 @@
-import { GET } from './api/posts/[id]/route';
+import { GET } from './api/posts/route';
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 

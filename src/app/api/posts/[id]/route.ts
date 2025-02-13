@@ -2,19 +2,18 @@ import { NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET() {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const client = await clientPromise;
         const db = client.db('my-blog');
-        const collection = await db.collection('entries').find().toArray();
-        return collection.map(({ ObjectId, title, post, tag }) => ({
-            _id: ObjectId.toString(),
-            title,
-            post,
-            tag,
-        }));
+        const post = await db.collection("entries").findOne({ _id: new ObjectId(params.id) });
+        if (!post) {
+            return NextResponse.json({ error: "Post not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(post, { status: 200 });
     } catch (e) {
-        console.error(e);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     } 
 }
 
