@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongo";
+import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
 export async function GET(req: Request, { params }: { params: Record<string, string> }) {
