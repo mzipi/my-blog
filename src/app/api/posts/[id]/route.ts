@@ -1,22 +1,25 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongo";
 import { ObjectId } from "mongodb";
 
-export async function GET() {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const client = await clientPromise;
-        const db = client.db('my-blog');
-        const collection = await db.collection('entries').find().toArray();
-        return collection.map(({ _id, title, post, tag }) => ({
-            _id: _id.toString(),
-            title,
-            post,
-            tag,
-        }));
-    } catch (e) {
-        console.error(e);
-    } 
+        const db = client.db("my-blog");
+
+        const post = await db.collection("entries").findOne({ _id: new ObjectId(params.id) });
+
+        if (!post) {
+            return NextResponse.json({ error: "Post no encontrado" }, { status: 404 });
+        }
+
+        return NextResponse.json(post);
+    } catch (error) {
+        console.error("Error al obtener el post:", error);
+        return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    }
 }
+
 
 /*
 export async function getSortedPostsData(): Promise<any> {
