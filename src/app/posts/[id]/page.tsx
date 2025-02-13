@@ -11,7 +11,11 @@ interface Post {
   post: string;
 }
 
-const PostPage = ({ params }: { params: { id: string } }) => {
+interface Params {
+  id: string;
+}
+
+const PostPage = ({ params }: { params: Params }) => {
   const [post, setPost] = useState<Post | null>(null);
   
   const { id } = React.use(params);
