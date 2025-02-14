@@ -1,7 +1,7 @@
 "use client"
 
-import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
+import { Footer } from "@/app/components/Footer"
+import { Header } from "@/app/components/Header"
 import { useEffect, useState } from 'react';
 
 interface Post {
@@ -17,7 +17,7 @@ export default function Home() {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch('/api/posts');
+            const response = await fetch('/api/entries');
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data);
