@@ -49,7 +49,7 @@ export default function Home() {
                                     </a>
                                     <h2 className="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">{post.title}</h2>
                                     <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">{post.post.slice(0, 300)}</p>
-                                    <a href={'blog/' + post._id} className="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read more
+                                    <a href={'entries/' + post._id} className="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read more
                                         <svg className="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                                         </svg>
