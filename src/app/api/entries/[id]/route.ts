@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongo';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params, query }: { params: { id: string }; query: {} }) {
     try {
         const client = await clientPromise;
         const db = client.db("my-blog");
