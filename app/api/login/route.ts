@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "app/lib/mongo";
 import { compare } from "bcrypt";
-import jwt from "jsonwebtoken";
+import { generateToken } from "app/lib/auth";
 
 export async function POST(req: NextRequest) {
     try {
@@ -15,7 +15,6 @@ export async function POST(req: NextRequest) {
         const db = client.db("my-blog");
 
         const user = await db.collection("users").findOne({ email });
-        const secret = process.env.SECRET_KEY || "default_secret";
 
         if (!user) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
@@ -26,7 +25,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
         }
 
-        const token = jwt.sign({ userId: user._id, email: user.email }, secret, { expiresIn: "1h" });
+        const token = generateToken(user._id.toString());
 
         return NextResponse.json({ token });
     } catch (error) {

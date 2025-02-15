@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "app/lib/mongo";
 import { verifyToken } from "app/lib/auth";
+import { ObjectId } from 'mongodb';
 
 export async function POST(req: NextRequest) {
     const token = req.headers.get("Authorization")?.split(" ")[1];
@@ -10,8 +11,14 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const userId = await verifyToken(token);
-        
+        const decodedToken = await verifyToken(token);
+
+        if (!decodedToken || typeof decodedToken === "string") {
+            return NextResponse.json({ error: "Token inválido" }, { status: 401 });
+        }
+
+        const userId = decodedToken.userId;
+
         const { postId, content } = await req.json();
         if (!postId || !content) {
             return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
@@ -19,6 +26,7 @@ export async function POST(req: NextRequest) {
 
         const client = await clientPromise;
         const db = client.db("my-blog");
+
 
         const newComment = { postId, content, userId, createdAt: new Date() };
         await db.collection("comments").insertOne(newComment);
@@ -32,7 +40,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const postId = searchParams.get("postId");
 
@@ -44,6 +52,17 @@ export async function GET(req: NextRequest) {
     const db = client.db("my-blog");
 
     const comments = await db.collection("comments").find({ postId }).toArray();
+    
+    const commentsWithUsername = await Promise.all(
+        comments.map(async (comment) => {
+            const user = await db.collection("users").findOne({ _id: new ObjectId(comment.userId) });
+            return {
+                ...comment,
+                username: user ? user.username : "Desconocido",
+            };
+        })
+    );
 
-    return NextResponse.json(comments);
+
+    return NextResponse.json(commentsWithUsername);
 }

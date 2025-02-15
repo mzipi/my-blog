@@ -4,7 +4,7 @@ import { hash } from "bcrypt";
 
 export async function POST(req: NextRequest) {
     try {
-        const { email, password } = await req.json();
+        const { username, email, password } = await req.json();
 
         const client = await clientPromise;
         const db = client.db("my-blog");
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
         const hashedPassword = await hash(password, 10);
 
-        await db.collection("users").insertOne({ email, password: hashedPassword });
+        await db.collection("users").insertOne({ username, email, password: hashedPassword });
 
         return NextResponse.json({ message: "Usuario registrado con éxito" }, { status: 201 });
     } catch (error) {

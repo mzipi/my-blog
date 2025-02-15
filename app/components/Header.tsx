@@ -9,6 +9,8 @@ export default function Header() {
                 <Link href="/">Inicio</Link>
                 <Link href="/dashboard">Dashboard</Link>
             </nav>
+            <Link href="/signup">Signup</Link>
+            <Link href="/login">Login</Link>
         </header>
     );
 }

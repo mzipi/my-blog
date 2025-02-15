@@ -1,16 +1,24 @@
 import { MongoClient } from "mongodb";
 
 const uri = process.env.DB_URL;
-const options = {};
-
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
 
 if (!uri) {
     throw new Error("Por favor, añade la variable DB_URL a tu archivo .env.local");
 }
 
-client = new MongoClient(uri, options);
-clientPromise = client.connect();
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
 
+declare global {
+    var _mongoClientPromise: Promise<MongoClient> | undefined;
+}
+
+if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, {
+        maxPoolSize: 10,
+    });
+    global._mongoClientPromise = client.connect();
+}
+
+clientPromise = global._mongoClientPromise;
 export default clientPromise;

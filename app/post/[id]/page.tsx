@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import styles from './page.module.css';
-import { verifyToken } from "@/app/lib/auth";
 
 interface Post {
     title: string;
@@ -22,7 +21,6 @@ export default function PostPage() {
     const [comments, setComments] = useState<Comment[]>([]);
     const [comment, setComment] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [username, setUsername] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -34,27 +32,22 @@ export default function PostPage() {
                 console.error('Error fetching post:', response.statusText);
             }
         };
-    
-        const fetchUsername = async (token: string) => {
-            const response = await fetch("/api/auth/verify-token", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-    
-            if (response.ok) {
-                const data = await response.json();
-                setUsername(data.username);
-            }
+
+        const fetchComments = async () => {
+            if (!postId) return;
+            const response = await fetch(`/api/comments?postId=${postId}`);
+            const data = await response.json();
+            setComments(data);
         };
-    
+
         if (postId) {
             fetchPost();
-            
+            fetchComments();
         }
-    
+
+        if (localStorage.getItem("token")) {
+            setIsLoggedIn(true);
+        }
     }, [postId]);
 
     const handleCommentSubmit = async (e: React.FormEvent) => {
@@ -72,9 +65,6 @@ export default function PostPage() {
 
         if (response.ok) {
             setComment("");
-            const updatedComments = await fetch(`/api/comments?postId=${postId}`);
-            const commentsData = await updatedComments.json();
-            setComments(commentsData);
         } else {
             alert("Error al comentar");
         }
