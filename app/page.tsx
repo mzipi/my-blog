@@ -1,7 +1,5 @@
 "use client";
 
-import Footer from "app/components/Footer";
-import Header from "app/components/Header";
 import { useEffect, useState } from "react";
 import styles from './Home.module.css';
 
@@ -49,7 +47,7 @@ export default function Home() {
                                     </a>
                                 ))}
                             </div>
-                            <a href={`/entries/${post._id}`}>Leer más</a>
+                            <a href={`/post/${post._id}`}>Leer más</a>
                         </div>
                     ))}
                 </div>
