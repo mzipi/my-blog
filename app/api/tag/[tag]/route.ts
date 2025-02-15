@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from 'app/lib/mongo';
 
-export async function GET(req: NextRequest, { params }: { params: { tag: string } }) {
+type Props = {
+    params: Promise<{
+        tag: string
+    }>
+}
+
+export async function GET(req: NextRequest, props: Props) {
+    const params = await props.params;
     const { tag } = params;
 
     const client = await clientPromise;
