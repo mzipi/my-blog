@@ -1,1 +1,0 @@
-export const DB_URL: any = process.env.DB_URL;
