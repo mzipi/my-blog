@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const uri = process.env.DB_URL;
+const uri = process.env.MONGODB_URI;
 
 if (!uri) {
     throw new Error("Por favor, añade la variable DB_URL a tu archivo .env.local");
