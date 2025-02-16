@@ -1,24 +1,40 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
-const uri = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || "tu_uri_de_mongodb_aqui";
 
-if (!uri) {
-    throw new Error("Por favor, añade la variable DB_URL a tu archivo .env.local");
+if (!MONGODB_URI) {
+    throw new Error("Por favor define la variable de entorno MONGODB_URI");
 }
 
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-declare global {
-    var _mongoClientPromise: Promise<MongoClient> | undefined;
+interface GlobalWithMongo extends globalThis.Global {
+    mongo: { conn: mongoose.Connection | null, promise: Promise<mongoose.Connection> | null };
 }
 
-if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, {
-        maxPoolSize: 10,
-    });
-    global._mongoClientPromise = client.connect();
+declare const global: GlobalWithMongo;
+
+let cached = global.mongo;
+
+if (!cached) {
+    cached = global.mongo = { conn: null, promise: null };
 }
 
-clientPromise = global._mongoClientPromise;
-export default clientPromise;
+async function connectToDatabase() {
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        const opts = {
+            bufferCommands: false,
+            serverSelectionTimeoutMS: 20000,
+        };
+
+        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+            return mongoose.connection;
+        });
+    }
+    cached.conn = await cached.promise;
+    return cached.conn;
+}
+
+export default connectToDatabase;

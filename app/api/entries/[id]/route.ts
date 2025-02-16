@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from 'app/lib/mongo';
-import { ObjectId } from 'mongodb';
+import connectToDatabase from 'app/lib/mongo';
+import { Entry } from "@/app/models/entries";
+import { Types } from 'mongoose';
 
 type Props = {
     params: Promise<{
@@ -10,15 +11,14 @@ type Props = {
 
 export async function GET(req: NextRequest, props: Props) {
     try {
-        const client = await clientPromise;
-        const db = client.db("my-blog");
+        await connectToDatabase();
         const params = await props.params;
 
-        if (!ObjectId.isValid(params.id)) {
+        if (!Types.ObjectId.isValid(params.id)) {
             return NextResponse.json({ error: "Invalid ObjectId format" }, { status: 400 });
         }
 
-        const post = await db.collection("entries").findOne({ _id: new ObjectId(params.id) });
+        const post = await Entry.findById(params.id);
 
         if (!post) {
             return NextResponse.json({ error: "Post not found" }, { status: 404 });

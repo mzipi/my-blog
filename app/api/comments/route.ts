@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import clientPromise from "app/lib/mongo";
+import connectToDatabase from "app/lib/mongo";
 import { verifyToken } from "app/lib/auth";
-import { ObjectId } from 'mongodb';
+import { Comment } from "@/app/models/comments";
+import { User } from "@/app/models/users";
 
 export async function POST(req: NextRequest) {
     const token = req.headers.get("Authorization")?.split(" ")[1];
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+        await connectToDatabase();
         const decodedToken = await verifyToken(token);
 
         if (!decodedToken || typeof decodedToken === "string") {
@@ -18,18 +20,14 @@ export async function POST(req: NextRequest) {
         }
 
         const userId = decodedToken.userId;
-
         const { postId, content } = await req.json();
+
         if (!postId || !content) {
             return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
         }
 
-        const client = await clientPromise;
-        const db = client.db("my-blog");
-
-
-        const newComment = { postId, content, userId, createdAt: new Date() };
-        await db.collection("comments").insertOne(newComment);
+        const newComment = new Comment({ postId, content, userId, createdAt: new Date() });
+        await newComment.save();
 
         return NextResponse.json({ message: "Comentario agregado" }, { status: 201 });
     } catch (error) {
@@ -48,21 +46,22 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "Falta postId" }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("my-blog");
+    try {
+        await connectToDatabase();
+        const comments = await Comment.find({ postId }).exec();
 
-    const comments = await db.collection("comments").find({ postId }).toArray();
-    
-    const commentsWithUsername = await Promise.all(
-        comments.map(async (comment) => {
-            const user = await db.collection("users").findOne({ _id: new ObjectId(comment.userId) });
-            return {
-                ...comment,
-                username: user ? user.username : "Desconocido",
-            };
-        })
-    );
+        const commentsWithUsername = await Promise.all(
+            comments.map(async (comment) => {
+                const user = await User.findById(comment.userId).exec();
+                return {
+                    ...comment.toObject(),
+                    username: user ? user.username : "Desconocido",
+                };
+            })
+        );
 
-
-    return NextResponse.json(commentsWithUsername);
+        return NextResponse.json(commentsWithUsername);
+    } catch (error) {
+        return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    }
 }

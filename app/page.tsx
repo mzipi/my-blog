@@ -13,10 +13,12 @@ interface Post {
 export default function Home() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
+    const [userRole, setUserRole] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch('/api/entries');
+
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data);
@@ -26,7 +28,28 @@ export default function Home() {
             setLoading(false);
         };
 
+        const fetchUserRole = async () => {
+            const token = localStorage.getItem('token');
+            
+            if (!token) return;
+            
+            const response = await fetch('/api/auth', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUserRole(data.role);
+            } else {
+                console.error('Error fetching user role');
+            }
+        };
+
         fetchPosts();
+        fetchUserRole();
     }, []);
 
     if (loading) return <div>Loading...</div>;
@@ -35,6 +58,9 @@ export default function Home() {
         <>
             <div className={styles.container}>
                 <h1 className={styles.heading}>Publicaciones</h1>
+                {userRole === 'admin' && (
+                    <a href="/dashboard" className={styles.dashboardLink}>Ir al Dashboard</a>
+                )}
                 <div className={styles.posts}>
                     {posts.map((post) => (
                         <div key={post._id} className={styles.post}>

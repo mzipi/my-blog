@@ -1,20 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from 'app/lib/mongo';
+import { NextRequest, NextResponse } from "next/server";
+import connectToDatabase from "app/lib/mongo";
+import { Entry } from "@/app/models/entries";
 
 type Props = {
-    params: Promise<{
-        tag: string
-    }>
-}
+    params: {
+        tag: string;
+    };
+};
 
-export async function GET(req: NextRequest, props: Props) {
-    const params = await props.params;
-    const { tag } = params;
+export async function GET(req: NextRequest, { params }: Props) {
+    try {
+        await connectToDatabase();
 
-    const client = await clientPromise;
-    const db = client.db("my-blog");
+        const posts = await Entry.find({ tags: params.tag });
 
-    const posts = await db.collection("entries").find({ tags: { $in: [tag] } }).toArray();
-
-    return NextResponse.json(posts);
+        return NextResponse.json(posts, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
 }

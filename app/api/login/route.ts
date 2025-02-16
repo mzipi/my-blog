@@ -1,20 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import clientPromise from "app/lib/mongo";
+import connectToDatabase from "app/lib/mongo";
+import { User } from "@/app/models/users";
 import { compare } from "bcrypt";
 import { generateToken } from "app/lib/auth";
 
 export async function POST(req: NextRequest) {
     try {
+        await connectToDatabase();
         const { email, password } = await req.json();
 
         if (!email || !password) {
             return NextResponse.json({ error: "Faltan credenciales" }, { status: 400 });
         }
 
-        const client = await clientPromise;
-        const db = client.db("my-blog");
-
-        const user = await db.collection("users").findOne({ email });
+        const user = await User.findOne({ email }) as { _id: string, password: string };
 
         if (!user) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });

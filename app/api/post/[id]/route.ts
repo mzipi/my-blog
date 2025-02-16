@@ -1,24 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from 'app/lib/mongo';
-import { ObjectId } from 'mongodb';
+import { NextRequest, NextResponse } from "next/server";
+import connectToDatabase from "app/lib/mongo";
+import { Entry } from "@/app/models/entries";
+import { Types } from "mongoose";
 
 type Props = {
-    params: Promise<{
-        id: string
-    }>
-}
+    params: {
+        id: string;
+    };
+};
 
-export async function GET(req: NextRequest, props: Props) {
+export async function GET(req: NextRequest, { params }: Props) {
     try {
-        const client = await clientPromise;
-        const db = client.db("my-blog");
-        const params = await props.params;
+        await connectToDatabase();
 
-        if (!ObjectId.isValid(params.id)) {
+        if (!Types.ObjectId.isValid(params.id)) {
             return NextResponse.json({ error: "Invalid ObjectId format" }, { status: 400 });
         }
 
-        const post = await db.collection("entries").findOne({ _id: new ObjectId(params.id) });
+        const post = await Entry.findById(params.id);
 
         if (!post) {
             return NextResponse.json({ error: "Post not found" }, { status: 404 });

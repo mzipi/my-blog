@@ -1,29 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function Dashboard() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [tags, setTags] = useState<string[]>([]);
+    const [userRole, setUserRole] = useState<string | null>(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+
+                router.push("/");
+                return;
+            }
+
+            const response = await fetch("/api/auth", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUserRole(data.role);
+            } else {
+
+                router.push("/");
+            }
+        };
+
+        fetchUserRole();
+    }, [router]);
+
+    if (userRole === null) {
+        return <div>Loading...</div>;
+    }
+
+    if (userRole !== "admin") {
+        return <div>No tienes permiso para acceder a esta página.</div>;
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!title || !content) return;
-    
+
         const response = await fetch("/api/entries", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, content, tags }),
         });
-    
+
         if (!response.ok) {
             const errorText = await response.text();
-            console.error("Error:", errorText); // Muestra el error en la consola
+            console.error("Error:", errorText);
             return;
         }
-    
+
         setTitle("");
         setContent("");
         setTags([]);
