@@ -26,7 +26,12 @@ export default function LoginPage() {
             const data = await response.json();
             localStorage.setItem("token", data.token);
             window.dispatchEvent(new Event("storage"));
-            router.push("/");
+
+            if (data.role === "admin") {
+                router.push("/dashboard");
+            } else {
+                router.push("/");
+            }
         } else {
             const data = await response.json();
             setError(data.error || "Error al iniciar sesión");

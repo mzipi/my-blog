@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"; 
 import connectToDatabase from "app/lib/mongo";
 import { User } from "@/app/models/users";
 import { compare } from "bcrypt";
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Faltan credenciales" }, { status: 400 });
         }
 
-        const user = await User.findOne({ email }) as { _id: string, password: string };
+        const user = await User.findOne({ email }) as { _id: string, password: string, role: string }; // Asegúrate de que el rol esté incluido
 
         if (!user) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
         }
 
-        const token = generateToken(user._id.toString());
+        const token = generateToken(user._id.toString(), user.role);
 
-        return NextResponse.json({ token });
+        return NextResponse.json({ token, role: user.role });
     } catch (error) {
         return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
     }

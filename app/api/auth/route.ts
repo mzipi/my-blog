@@ -4,7 +4,7 @@ import { User } from "app/models/users";
 
 export async function GET(req: NextRequest) {
     const token = req.headers.get("Authorization")?.split(" ")[1];
-    console.log("DAAAAAATAAAAAAAAAA: " + token);
+    
     if (!token) {
         return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
