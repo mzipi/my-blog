@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
         }
 
-        const token = generateToken(user._id.toString(), user.role);
+        const token = generateToken(user.role);
 
         return NextResponse.json({ token, role: user.role });
     } catch (error) {

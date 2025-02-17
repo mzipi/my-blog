@@ -15,12 +15,12 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: "Token inválido" }, { status: 403 });
         }
 
-        const user = await User.findById(decodedToken.userId);
-        if (!user) {
-            return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
-        }
+        // const user = await User.findById(decodedToken.userId);
+        // if (!user) {
+        //     return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
+        // }
 
-        return NextResponse.json({ role: user.role });
+        return NextResponse.json({ role: decodedToken.role });
     } catch (error) {
         return NextResponse.json({ error: "Error en el servidor" }, { status: 500 });
     }

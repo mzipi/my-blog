@@ -3,24 +3,30 @@
 import Link from 'next/link';
 import styles from './Header.module.css';
 import { useEffect, useState } from "react";
-import { verifyToken } from "@/app/lib/auth";
 
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
-    const [username, setUsername] = useState<string | null>(null);
-    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [userRole, setUserRole] = useState<string | null>(null);
 
     useEffect(() => {
-        const checkAuth = () => {
-            const token = localStorage.getItem("token");
+        const checkAuth = async () => {
+            const token = localStorage.getItem('token');
+
             if (token) {
                 setIsLoggedIn(true);
-                const decodedToken = verifyToken(token);
-                if (decodedToken && typeof decodedToken !== "string") {
-                    setUsername(decodedToken.username);
-                    if (decodedToken.role === "admin") {
-                        setIsAdmin(true);
-                    }
+                
+                const response = await fetch('/api/auth', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserRole(data.role);
+                } else {
+                    setIsLoggedIn(false);
                 }
             } else {
                 setIsLoggedIn(false);
@@ -40,12 +46,6 @@ export default function Header() {
         };
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-        setIsAdmin(false);
-    };
-
     if (isLoggedIn === null) return null;
 
     return (
@@ -53,14 +53,16 @@ export default function Header() {
             <h1 className={styles.title}>MZIPI</h1>
             <nav className={styles.nav}>
                 <Link href="/">Inicio</Link>
-                {isAdmin && <Link href="/dashboard">Dashboard</Link>} {/* Mostrar solo si es admin */}
+                {userRole === 'admin' && (
+                    <Link href="/dashboard" className={styles.dashboardLink}>Dashboard</Link>
+                )}
                 {!isLoggedIn ? (
                     <>
                         <Link href="/signup">Signup</Link>
                         <Link href="/login">Login</Link>
                     </>
                 ) : (
-                    <button onClick={handleLogout}>Logout</button>
+                    <Link href="/logout">Logout</Link>
                 )}
             </nav>
         </header>

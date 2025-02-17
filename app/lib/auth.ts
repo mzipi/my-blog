@@ -2,8 +2,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 const SECRET = process.env.JWT_SECRET || "secret_key";
 
-export function generateToken(userId: string, role: string) {
-    return jwt.sign({ userId, role }, SECRET, { expiresIn: "1h" });
+export function generateToken(role: string) {
+    return jwt.sign({ role }, SECRET, { expiresIn: "1h" });
 }
 
 export function verifyToken(token: string) {
