@@ -1,6 +1,6 @@
 import './globals.css';
-import Header from "app/components/Header";
-import Footer from "app/components/Footer";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata = {
     title: 'MZIPI | blog',

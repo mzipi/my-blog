@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import connectToDatabase from "app/lib/mongo";
-import { User } from "@/app/models/users";
-import { verifyToken } from "app/lib/auth";
+import connectToDatabase from "@/lib/mongo";
+import { User } from "@/models/users";
+import { verifyToken } from "@/lib/auth";
 import { hash } from "bcrypt";
 
 export async function GET(req: NextRequest) {

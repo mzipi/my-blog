@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import connectToDatabase from "app/lib/mongo";
-import { verifyToken } from "app/lib/auth";
-import { Comment } from "@/app/models/comments";
-import { User } from "@/app/models/users";
+import connectToDatabase from "@/lib/mongo";
+import { verifyToken } from "@/lib/auth";
+import { Comment } from "@/models/comments";
+import { User } from "@/models/users";
 
 export async function POST(req: NextRequest) {
     const token = req.headers.get("Authorization")?.split(" ")[1];

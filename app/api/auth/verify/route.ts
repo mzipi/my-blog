@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "app/lib/auth";
+import { verifyToken } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
     const token = req.cookies.get('token');

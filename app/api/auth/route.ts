@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "app/lib/auth";
-import { User } from "app/models/users";
+import { verifyToken } from "@/lib/auth";
+import { User } from "@/models/users";
 
 export async function GET(req: NextRequest) {
     const token = req.headers.get("Authorization")?.split(" ")[1];

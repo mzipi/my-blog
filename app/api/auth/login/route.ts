@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"; 
-import connectToDatabase from "app/lib/mongo";
-import { User } from "@/app/models/users";
+import connectToDatabase from "@/lib/mongo";
+import { User } from "@/models/users";
 import { compare } from "bcrypt";
-import { generateToken } from "app/lib/auth";
+import { generateToken } from "@/lib/auth";
 import { serialize } from "cookie";
 
 export async function POST(req: NextRequest) {
