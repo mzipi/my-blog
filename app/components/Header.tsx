@@ -1,36 +1,28 @@
-"use client";
+"use client"
 
 import Link from 'next/link';
-import styles from './Header.module.css';
 import { useEffect, useState } from "react";
+import Cookies from 'js-cookie';
+import styles from './Header.module.css';
+import LogoutButton from './Logout';
 
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
     const [userRole, setUserRole] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const checkAuth = async () => {
-            const token = localStorage.getItem('token');
+            const token = Cookies.get('token');
 
             if (token) {
                 setIsLoggedIn(true);
-                
-                const response = await fetch('/api/auth', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserRole(data.role);
-                } else {
-                    setIsLoggedIn(false);
-                }
+                const role = Cookies.get('userRole') || null;
+                setUserRole(role);
             } else {
                 setIsLoggedIn(false);
             }
+            setLoading(false);
         };
 
         checkAuth();
@@ -41,28 +33,39 @@ export default function Header() {
 
         window.addEventListener("storage", handleStorageChange);
 
+
         return () => {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, []);
 
-    if (isLoggedIn === null) return null;
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setUserRole(null);
+        Cookies.remove('token');
+        Cookies.remove('userRole');
+    };
+
+    if (loading) {
+        return <div>Cargando...</div>;
+    }
 
     return (
         <header className={styles.header}>
             <h1 className={styles.title}>MZIPI</h1>
             <nav className={styles.nav}>
                 <Link href="/">Inicio</Link>
-                {userRole === 'admin' && (
-                    <Link href="/dashboard" className={styles.dashboardLink}>Dashboard</Link>
-                )}
+                {userRole === 'admin' && <Link href="/dashboard" className={styles.dashboardLink}>Dashboard</Link>}
                 {!isLoggedIn ? (
                     <>
-                        <Link href="/signup">Signup</Link>
-                        <Link href="/login">Login</Link>
+                        <Link href="/auth/signup">Signup</Link>
+                        <Link href="/auth/login">Login</Link>
                     </>
                 ) : (
-                    <Link href="/logout">Logout</Link>
+                    <>
+                        <Link href="/profile">Perfil</Link>
+                        <LogoutButton onLogout={handleLogout} />
+                    </>
                 )}
             </nav>
         </header>

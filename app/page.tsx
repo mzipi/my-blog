@@ -41,7 +41,7 @@ export default function Home() {
                     {posts.map((post) => (
                         <div key={post._id} className={styles.post}>
                             <h2 className={styles.postTitle}>{post.title}</h2>
-                            <p className={styles.postContent}>{post.content.slice(0, 300)}</p>
+                            <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
                             <div>
                                 {post.tags.map((tag) => (
                                     <a key={tag} href={`/tag/${tag}`} className={styles.tag}>

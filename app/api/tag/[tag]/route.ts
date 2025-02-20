@@ -2,13 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "app/lib/mongo";
 import { Entry } from "@/app/models/entries";
 
-type Props = {
-    params: {
-        tag: string;
-    };
-};
-
-export async function GET(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, { params }: { params: { tag: string } }) {
     try {
         await connectToDatabase();
 

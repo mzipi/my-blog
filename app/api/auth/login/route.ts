@@ -3,6 +3,7 @@ import connectToDatabase from "app/lib/mongo";
 import { User } from "@/app/models/users";
 import { compare } from "bcrypt";
 import { generateToken } from "app/lib/auth";
+import { serialize } from "cookie";
 
 export async function POST(req: NextRequest) {
     try {
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Faltan credenciales" }, { status: 400 });
         }
 
-        const user = await User.findOne({ email }) as { _id: string, password: string, role: string }; // Asegúrate de que el rol esté incluido
+        const user = await User.findOne({ email }) as { _id: string, password: string, role: string };
 
         if (!user) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
@@ -24,9 +25,26 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
         }
 
-        const token = generateToken(user.role);
+        const token = generateToken(user._id, user.role);
 
-        return NextResponse.json({ token, role: user.role });
+        const tokenCookie = serialize("token", token, {
+            // httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 3600,
+            path: "/",
+            sameSite: "strict",
+        });
+
+        const roleCookie = serialize("userRole", user.role, {
+            path: "/",
+            maxAge: 3600,
+            sameSite: "strict",
+        });
+
+        return new NextResponse(JSON.stringify({ message: "Login exitoso", role: user.role }), {
+            status: 200,
+            headers: { "Set-Cookie": `${tokenCookie}, ${roleCookie}` }, // Agregamos ambas cookies
+        });
     } catch (error) {
         return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
     }

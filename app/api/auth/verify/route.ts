@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "app/lib/auth";
-import { User } from "app/models/users";
 
 export async function GET(req: NextRequest) {
-    const token = req.headers.get("Authorization")?.split(" ")[1];
-    
+    const token = req.cookies.get('token');
+
     if (!token) {
         return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     try {
-        const decodedToken = verifyToken(token);
+        const decodedToken = verifyToken(token.value);
         if (!decodedToken || typeof decodedToken === "string") {
             return NextResponse.json({ error: "Token inválido" }, { status: 403 });
         }

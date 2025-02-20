@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
 import styles from "./page.module.css";
 
 export default function Dashboard() {
@@ -13,16 +14,16 @@ export default function Dashboard() {
 
     useEffect(() => {
         const fetchUserRole = async () => {
-            const token = localStorage.getItem("token");
+            const token = Cookies.get("token");
 
             if (!token) {
-
                 router.push("/");
                 return;
             }
 
-            const response = await fetch("/api/auth", {
+            const response = await fetch("/api/auth/verify", {
                 method: "GET",
+                credentials: 'include',
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -32,7 +33,6 @@ export default function Dashboard() {
                 const data = await response.json();
                 setUserRole(data.role);
             } else {
-
                 router.push("/");
             }
         };
