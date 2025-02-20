@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "app/lib/mongo";
 import { Entry } from "@/app/models/entries";
-import { Types } from "mongoose";
+import { ObjectId } from "mongodb";
 
 type Props = {
     params: {
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: Props) {
     try {
         await connectToDatabase();
 
-        if (!Types.ObjectId.isValid(params.id)) {
+        if (!ObjectId.isValid(params.id)) {
             return NextResponse.json({ error: "Invalid ObjectId format" }, { status: 400 });
         }
 
