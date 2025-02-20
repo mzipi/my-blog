@@ -44,12 +44,12 @@ export default function Home() {
                             <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
                             <div>
                                 {post.tags.map((tag) => (
-                                    <a key={tag} href={`/tag/${tag}`} className={styles.tag}>
+                                    <a key={tag} href={`/entries/tag/${tag}`} className={styles.tag}>
                                         {tag}
                                     </a>
                                 ))}
                             </div>
-                            <a href={`/post/${post._id}`}>Leer más</a>
+                            <a href={`/entries/${post._id}`}>Leer más</a>
                         </div>
                     ))}
                 </div>

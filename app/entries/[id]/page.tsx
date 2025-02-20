@@ -5,8 +5,10 @@ import { useParams } from "next/navigation";
 import styles from './page.module.css';
 
 interface Post {
+    _id: string;
     title: string;
     content: string;
+    tags: string[];
 }
 
 interface Comment {
@@ -17,7 +19,8 @@ interface Comment {
 
 export default function PostPage() {
     const [post, setPost] = useState<Post | null>(null);
-    const { id: postId } = useParams();
+    const { id } = useParams();
+    const postId = Array.isArray(id) ? id[0] : id;
     const [comments, setComments] = useState<Comment[]>([]);
     const [comment, setComment] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,9 +38,14 @@ export default function PostPage() {
 
         const fetchComments = async () => {
             if (!postId) return;
-            const response = await fetch(`/api/comments?postId=${postId}`);
-            const data = await response.json();
-            setComments(data);
+            try {
+                const response = await fetch(`/api/comments?postId=${postId}`);
+                if (!response.ok) throw new Error("Error al obtener comentarios");
+                const data = await response.json();
+                setComments(data);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         if (postId) {

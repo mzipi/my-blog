@@ -18,7 +18,7 @@ export default function TagPage() {
 
     useEffect(() => {
         const fetchPostsByTag = async () => {
-            const response = await fetch(`/api/tag/${tag}`);
+            const response = await fetch(`/api/entries/tag/${tag}`);
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data);
