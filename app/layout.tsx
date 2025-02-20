@@ -3,7 +3,7 @@ import Header from "app/components/Header";
 import Footer from "app/components/Footer";
 
 export const metadata = {
-    title: 'MZIPI | Blog',
+    title: 'MZIPI | blog',
     description: 'Bienvenido a mi blog',
 };
 
