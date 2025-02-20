@@ -5,7 +5,7 @@ import { Entry } from "@/app/models/entries";
 export async function GET(request: NextRequest) {
     try {
         const searchParams = request.nextUrl.searchParams;
-        const id = searchParams.get('id')
+        const id = searchParams.get('id');
         
         await connectToDatabase();
 

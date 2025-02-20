@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "app/lib/mongo";
 import { Entry } from "@/app/models/entries";
 
-export async function GET(req: NextRequest, { params }: { params: { tag: string } }) {
+export async function GET(request: NextRequest) {
     try {
+        const searchParams = request.nextUrl.searchParams;
+        const tag = searchParams.get('tag');
+
         await connectToDatabase();
 
-        const posts = await Entry.find({ tags: params.tag });
+        const posts = await Entry.find({ tags: tag });
 
         return NextResponse.json(posts, { status: 200 });
     } catch (error) {
