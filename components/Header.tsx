@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
-import styles from './Header.module.css';
+import styles from '@/styles/Header.module.css';
 import LogoutButton from './Logout';
 
 export default function Header() {

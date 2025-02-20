@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import styles from "./page.module.css";
+import styles from "@/styles/Tag.module.css";
 
 interface Post {
     _id: string;

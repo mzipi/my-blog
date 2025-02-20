@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./page.module.css";
+import styles from "@/styles/Signup.module.css";
 
 export default function RegisterPage() {
     const [username, setUsername] = useState("");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from './Home.module.css';
+import styles from '@/styles/Home.module.css';
 
 interface Post {
     _id: string;

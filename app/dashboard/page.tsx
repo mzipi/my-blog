@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
-import styles from "./page.module.css";
+import styles from "@/styles/Dashboard.module.css";
 
 export default function Dashboard() {
     const [title, setTitle] = useState("");
