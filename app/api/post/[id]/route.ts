@@ -3,12 +3,14 @@ import connectToDatabase from 'app/lib/mongo';
 import { Entry } from "@/app/models/entries";
 import { ObjectId } from 'mongodb';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
     try {
+        const searchParams = request.nextUrl.searchParams;
+        const id = searchParams.get('id')
+        
         await connectToDatabase();
-        const { id } = params;
 
-        if (!ObjectId.isValid(id)) {
+        if (!id) {
             return NextResponse.json({ error: "Invalid ObjectId format" }, { status: 400 });
         }
 
