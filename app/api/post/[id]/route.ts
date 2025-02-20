@@ -1,23 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import connectToDatabase from "app/lib/mongo";
+import { NextRequest, NextResponse } from 'next/server';
+import connectToDatabase from 'app/lib/mongo';
 import { Entry } from "@/app/models/entries";
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 
-type Props = {
-    params: {
-        id: string;
-    };
-};
-
-export async function GET(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await connectToDatabase();
+        const { id } = params;
 
-        if (!ObjectId.isValid(params.id)) {
+        if (!ObjectId.isValid(id)) {
             return NextResponse.json({ error: "Invalid ObjectId format" }, { status: 400 });
         }
 
-        const post = await Entry.findById(params.id);
+        const post = await Entry.findById(id);
 
         if (!post) {
             return NextResponse.json({ error: "Post not found" }, { status: 404 });
