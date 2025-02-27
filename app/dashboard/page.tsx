@@ -1,111 +1,70 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from 'js-cookie';
-import styles from "@/styles/Dashboard.module.css";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function Dashboard() {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+const AdminPage = () => {
+    const [post, setPost] = useState({ title: '', content: '', tags: '' });
     const [tags, setTags] = useState<string[]>([]);
-    const [userRole, setUserRole] = useState<string | null>(null);
+    const [admin, setAdmin] = useState({ username: '', email: '', password: '' });
     const router = useRouter();
 
-    useEffect(() => {
-        const fetchUserRole = async () => {
-            const token = Cookies.get("token");
-
-            if (!token) {
-                router.push("/");
-                return;
-            }
-
-            const response = await fetch("/api/auth/verify", {
-                method: "GET",
-                credentials: 'include',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setUserRole(data.role);
-            } else {
-                router.push("/");
-            }
-        };
-
-        fetchUserRole();
-    }, [router]);
-
-    if (userRole === null) {
-        return <div>Loading...</div>;
-    }
-
-    if (userRole !== "admin") {
-        return <div>No tienes permiso para acceder a esta página.</div>;
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!title || !content) return;
-
-        const response = await fetch("/api/entries", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, content, tags }),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Error:", errorText);
-            return;
-        }
-
-        setTitle("");
-        setContent("");
-        setTags([]);
+    const handlePostChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setPost({ ...post, [e.target.name]: e.target.value });
     };
 
-    const toggleTag = (tag: string) => {
-        setTags((prevTags) =>
-            prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [...prevTags, tag]
-        );
+    const handleAdminChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAdmin({ ...admin, [e.target.name]: e.target.value });
+    };
+
+    const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTags(e.target.value.split(','));
+    };
+
+    const createPost = async () => {
+        const response = await fetch('/api/entries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(post),
+        });
+        if (response.ok) {
+            router.refresh();
+        }
+    };
+
+    const editAdmin = async () => {
+        // Lógica para editar admin
+    };
+
+    const editUser = async (userId: string) => {
+        // Lógica para editar usuario
     };
 
     return (
-        <div className={styles.container}>
-            <h1 className={styles.title}>Crear un nuevo post</h1>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <input
-                    className={styles.input}
-                    type="text"
-                    placeholder="Título"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <textarea
-                    className={styles.textarea}
-                    placeholder="Contenido"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                />
-                <div className={styles.tagsContainer}>
-                    {["noticias", "tecnología", "juegos", "opinión"].map((tag) => (
-                        <label key={tag} className={styles.tag}>
-                            <input
-                                type="checkbox"
-                                checked={tags.includes(tag)}
-                                onChange={() => toggleTag(tag)}
-                            />
-                            {tag}
-                        </label>
-                    ))}
-                </div>
-                <button className={styles.button} type="submit">Publicar</button>
-            </form>
+        <div>
+            <h1>Admin Page</h1>
+
+            <h2>Create Post</h2>
+            <input type="text" name="title" placeholder="Title" onChange={handlePostChange} />
+            <textarea name="content" placeholder="Content" onChange={handlePostChange}></textarea>
+            <input type="text" name="tags" placeholder="Tags (comma separated)" onChange={handleTagChange} />
+            <button onClick={createPost}>Create Post</button>
+
+            <h2>Edit Tags</h2>
+            <input type="text" onChange={handleTagChange} placeholder="Edit tags" />
+            {/* Implementar lógica para mostrar y eliminar etiquetas */}
+
+            <h2>Edit Admin</h2>
+            <input type="text" name="username" placeholder="Username" onChange={handleAdminChange} />
+            <input type="email" name="email" placeholder="Email" onChange={handleAdminChange} />
+            <input type="password" name="password" placeholder="Password" onChange={handleAdminChange} />
+            <button onClick={editAdmin}>Update Admin</button>
+
+            <h2>Manage Users</h2>
+            {/* Mostrar lista de usuarios y opciones de edición */}
         </div>
     );
-}
+};
+
+export default AdminPage;

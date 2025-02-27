@@ -6,14 +6,14 @@ export async function POST(req: Request) {
     try {
         await connectToDatabase();
 
-        const body = await req.json();
+        const { post } = await req.json();
 
-        if (!body.title || !body.content || !body.tags) {
+        if (!post.title || !post.content || !post.tags) {
             return NextResponse.json({ error: "Faltan campos requeridos (title, content o tags)" }, { status: 400 });
         }
 
 
-        const newEntry = new Entry(body);
+        const newEntry = new Entry(post);
         await newEntry.save();
 
         return NextResponse.json({ message: "Post creado", id: newEntry._id }, { status: 201 });
