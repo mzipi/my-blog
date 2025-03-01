@@ -7,43 +7,57 @@ import styles from '@/styles/Header.module.css';
 import LogoutButton from './Logout';
 
 export default function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userRole, setUserRole] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const checkAuth = async () => {
             const token = Cookies.get('token');
-
-            if (token) {
-                setIsLoggedIn(true);
-                const role = Cookies.get('userRole') || null;
-                setUserRole(role);
-            } else {
+            if (!token) {
                 setIsLoggedIn(false);
+                setUserRole(null);
+                setLoading(false);
+                return;
             }
+
+            try {
+                const response = await fetch("/api/auth/verify", {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserRole(data.role);
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                    setUserRole(null);
+                }
+            } catch (error) {
+                console.error("Error al verificar autenticación:", error);
+                setIsLoggedIn(false);
+                setUserRole(null);
+            }
+
             setLoading(false);
         };
 
         checkAuth();
 
-        const handleStorageChange = () => {
-            checkAuth();
-        };
-
-        window.addEventListener("storage", handleStorageChange);
-
+        const handleAuthChange = () => checkAuth();
+        window.addEventListener("authChange", handleAuthChange);
 
         return () => {
-            window.removeEventListener("storage", handleStorageChange);
+            window.removeEventListener("authChange", handleAuthChange);
         };
     }, []);
 
     const handleLogout = () => {
+        Cookies.remove('token');
         setIsLoggedIn(false);
         setUserRole(null);
-        Cookies.remove('token');
-        Cookies.remove('userRole');
     };
 
     if (loading) {

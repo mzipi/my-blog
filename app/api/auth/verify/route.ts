@@ -5,12 +5,12 @@ export async function GET(req: NextRequest) {
     const token = req.cookies.get('token');
 
     if (!token) {
-        return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+        return NextResponse.json({ error: "Token no proporcionado" }, { status: 401 });
     }
 
     try {
         const decodedToken = verifyToken(token.value);
-        if (!decodedToken || typeof decodedToken === "string") {
+        if (!decodedToken) {
             return NextResponse.json({ error: "Token inválido" }, { status: 403 });
         }
 

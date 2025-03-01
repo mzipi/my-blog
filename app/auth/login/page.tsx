@@ -20,12 +20,12 @@ export default function LoginPage() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ email, password }),
+            credentials: "include",
         });
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem("token", data.token);
-            window.dispatchEvent(new Event("storage"));
+            window.dispatchEvent(new Event("authChange"));
 
             if (data.role === "admin") {
                 router.push("/dashboard");

@@ -35,12 +35,6 @@ export async function POST(req: NextRequest) {
             sameSite: "strict",
         });
 
-        const roleCookie = serialize("userRole", user.role, {
-            path: "/",
-            maxAge: 3600,
-            sameSite: "strict",
-        });
-
         return new NextResponse(JSON.stringify({ message: "Login exitoso", role: user.role }), {
             status: 200,
             headers: { "Set-Cookie": `${tokenCookie}, ${roleCookie}` },

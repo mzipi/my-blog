@@ -11,6 +11,7 @@ const LogoutButton = ({ onLogout }: { onLogout: () => void }) => {
 
         if (response.ok) {
             onLogout();
+            window.dispatchEvent(new Event("authChange"));
             router.push('/');
         } else {
             console.error('Error al cerrar sesión');
@@ -25,3 +26,4 @@ const LogoutButton = ({ onLogout }: { onLogout: () => void }) => {
 };
 
 export default LogoutButton;
+
