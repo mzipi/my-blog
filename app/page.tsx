@@ -43,8 +43,6 @@ export default function Home() {
                 <div className={styles.posts}>
                     {posts.map((post) => (
                         <div key={post._id} className={styles.post}>
-                            <h2 className={styles.postTitle}>{post.title}</h2>
-                            <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
                             <div>
                                 {post.tags.map((tag) => (
                                     <a key={tag} href={`/entries/tag/${tag}`} className={styles.tag}>
@@ -52,7 +50,13 @@ export default function Home() {
                                     </a>
                                 ))}
                             </div>
-                            <a href={`/entries/${post._id}`}>Leer más</a>
+                            <div className={styles.postContentContainer}>
+                                <h2 className={styles.postTitle}>{post.title}</h2>
+                                <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
+                            </div>
+                            <div className={styles.readMoreContainer}>
+                                <a href={`/entries/${post._id}`} className="readMore">Leer más</a>
+                            </div>
                         </div>
                     ))}
                 </div>

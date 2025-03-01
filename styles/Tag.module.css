@@ -1,0 +1,28 @@
+.container {
+    padding: 2rem;
+    background-color: #1f2937;
+    color: white;
+    justify-items: center;
+    min-height: 77vh;
+}
+
+.posts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 60vw;
+    gap: 1rem;
+    justify-items:center;
+}
+
+.post {
+    background-color: #2d3748;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}

@@ -46,7 +46,7 @@ export default function TagPage() {
                         <div key={post._id} className={styles.post}>
                             <h2 className={styles.postTitle}>{post.title}</h2>
                             <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
-                            <a href={`/entries/${post._id}`}>Leer más</a>
+                            <a href={`/entries/${post._id}`} className="readMore">Leer más</a>
                         </div>
                     ))
                 ) : (
