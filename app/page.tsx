@@ -13,11 +13,14 @@ interface Post {
 export default function Home() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
-    const [userRole, setUserRole] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch('/api/entries');
+            const response = await fetch('/api/entries', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+            });
 
             if (response.ok) {
                 const data = await response.json();

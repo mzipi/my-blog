@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
@@ -12,7 +11,10 @@ export default function ProfilePage() {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const response = await fetch("/api/auth/profile", { method: "GET", credentials: "include" });
+            const response = await fetch("/api/auth/profile", {
+                method: "GET",
+                credentials: "include" 
+            });
             if (response.ok) {
                 const data = await response.json();
                 setUsername(data.username);

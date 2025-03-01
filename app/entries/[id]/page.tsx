@@ -27,7 +27,13 @@ export default function PostPage() {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const response = await fetch(`/api/entries/${postId}`);
+            const response = await fetch(`/api/entries/${postId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            });
             if (response.ok) {
                 const data = await response.json();
                 setPost(data);
@@ -39,7 +45,13 @@ export default function PostPage() {
         const fetchComments = async () => {
             if (!postId) return;
             try {
-                const response = await fetch(`/api/comments?postId=${postId}`);
+                const response = await fetch(`/api/comments?postId=${postId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                });
                 if (!response.ok) throw new Error("Error al obtener comentarios");
                 const data = await response.json();
                 setComments(data);

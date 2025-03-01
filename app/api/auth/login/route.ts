@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
         return new NextResponse(JSON.stringify({ message: "Login exitoso", role: user.role }), {
             status: 200,
-            headers: { "Set-Cookie": `${tokenCookie}, ${roleCookie}` }, // Agregamos ambas cookies
+            headers: { "Set-Cookie": `${tokenCookie}, ${roleCookie}` },
         });
     } catch (error) {
         return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
