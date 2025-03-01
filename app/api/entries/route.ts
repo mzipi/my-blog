@@ -25,8 +25,6 @@ export async function POST(req: Request) {
 
 export async function GET() {
     try {
-        console.log("HOLA MUNDO!");
-
         await connectToDatabase();
 
         const posts = await Entry.find({});
