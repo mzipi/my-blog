@@ -22,6 +22,8 @@ export default function Home() {
                 credentials: 'include',
             });
 
+            console.log("LA RESPONSE ES: ", response);
+
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data);
