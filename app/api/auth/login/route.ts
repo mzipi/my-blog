@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         const token = generateToken(user._id, user.role);
 
         const tokenCookie = serialize("token", token, {
-            // httpOnly: true,
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 3600,
             path: "/",
