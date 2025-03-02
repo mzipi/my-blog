@@ -39,26 +39,38 @@ export default function LoginPage() {
     };
 
     return (
-        <div className={styles.container}>
-            <h1>Iniciar Sesión</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Correo electrónico"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                {error && <p className={styles.error}>{error}</p>}
-                <button type="submit">Iniciar Sesión</button>
-            </form>
-        </div>
+        <>
+            <h1 className={styles.heading}>Iniciar Sesión</h1>
+            <div className={styles.container}>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="email">Correo electrónico</label>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="manolito2004@gmail.com"
+                            value={email}
+                            className={styles.input}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="password">Contraseña</label>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="•••••••••••"
+                            value={password}
+                            className={styles.input}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button className={styles.button} type="submit">Iniciar Sesión</button>
+                    {error && <p className={styles.error}>{error}</p>}
+                </form>
+            </div>
+        </>
     );
 }

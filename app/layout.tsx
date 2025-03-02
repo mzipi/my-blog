@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import styles from '@/styles/Layout.module.css';
 
 export const metadata = {
     title: 'MZIPI | blog',
@@ -12,7 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="es">
             <body>
                 <Header />
-                {children}
+                <div className={styles.main}>
+                    {children}
+                </div>
                 <Footer />
             </body>
         </html>

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import styles from '@/styles/Home.module.css';
+import PostComponent from '@/components/PostComponent';
 
-interface Post {
+interface PostData {
     _id: string;
     title: string;
     content: string;
@@ -11,7 +12,7 @@ interface Post {
 }
 
 export default function Home() {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<PostData[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -37,30 +38,13 @@ export default function Home() {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <>
-            <div className={styles.container}>
-                <h1 className={styles.heading}>Publicaciones</h1>
-                <div className={styles.posts}>
-                    {posts.map((post) => (
-                        <div key={post._id} className={styles.post}>
-                            <div>
-                                {post.tags.map((tag) => (
-                                    <a key={tag} href={`/entries/tag/${tag}`} className={styles.tag}>
-                                        {tag}
-                                    </a>
-                                ))}
-                            </div>
-                            <div className={styles.postContentContainer}>
-                                <h2 className={styles.postTitle}>{post.title}</h2>
-                                <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
-                            </div>
-                            <div className={styles.readMoreContainer}>
-                                <a href={`/entries/${post._id}`} className="readMore">Leer más</a>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        <div className={styles.container}>
+            <h1 className={styles.heading}>Publicaciones</h1>
+            <div className={styles.posts}>
+                {posts.map((post) => (
+                    <PostComponent key={post._id} {...post} />
+                ))}
             </div>
-        </>
+        </div>
     );
 }

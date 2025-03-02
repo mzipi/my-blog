@@ -1,22 +1,30 @@
-import Link from "next/link";
+import React from 'react';
+import styles from '@/styles/PostComponent.module.css';
+import Tag from "@/components/Tag";
 
-interface Post {
+interface PostProps {
+    _id: string;
     title: string;
     content: string;
     tags: string[];
 }
 
-export default function PostComponent ({ post }: { post: Post }) {
+export default function PostComponent({ _id, title, content, tags }: PostProps) {
     return (
-        <div>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
+        <div key={_id} className={styles.post}>
             <div>
-                {post.tags.map(tag => (
-                    <Link key={tag} href={`/entries/${tag}`}>
-                        <span>{tag}</span>
-                    </Link>
+                {tags.map((tag) => (
+                    <Tag key={tag} tag={tag} />
                 ))}
+            </div>
+            <div className={styles.postContentContainer}>
+                <h2 className={styles.postTitle}>{title}</h2>
+                <p className={styles.postContent}>{content.slice(0, 300) + '...'}</p>
+            </div>
+            <div className={styles.readMoreContainer}>
+                <a href={`/entries/${_id}`} className="readMore">
+                    Leer más
+                </a>
             </div>
         </div>
     );

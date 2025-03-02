@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import styles from "@/styles/Tag.module.css";
+import styles from "@/styles/TagPage.module.css";
+import PostComponent from "@/components/PostComponent";
 
 interface Post {
     _id: string;
@@ -23,6 +24,7 @@ export default function TagPage() {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
             });
+
             if (response.ok) {
                 const data = await response.json();
                 setPosts(data);
@@ -43,11 +45,13 @@ export default function TagPage() {
             <div className={styles.posts}>
                 {posts.length > 0 ? (
                     posts.map((post) => (
-                        <div key={post._id} className={styles.post}>
-                            <h2 className={styles.postTitle}>{post.title}</h2>
-                            <p className={styles.postContent}>{post.content.slice(0, 300) + "..."}</p>
-                            <a href={`/entries/${post._id}`} className="readMore">Leer más</a>
-                        </div>
+                        <PostComponent
+                            key={post._id}
+                            _id={post._id}
+                            title={post.title}
+                            content={post.content}
+                            tags={post.tags}
+                        />
                     ))
                 ) : (
                     <p>No hay publicaciones para esta etiqueta.</p>

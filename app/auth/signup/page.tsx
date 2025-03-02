@@ -37,25 +37,27 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className={styles.container}>
+        <>
             <h1 className={styles.heading}>Registro</h1>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label} htmlFor="username">Nombre de usuario</label>
-                    <input className={styles.input} type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label} htmlFor="email">Correo electrónico</label>
-                    <input className={styles.input} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label} htmlFor="password">Contraseña</label>
-                    <input className={styles.input} type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-                <button className={styles.button} type="submit">Registrarse</button>
-            </form>
-            {error && <p className={styles.error}>{error}</p>}
-            {success && <p className={styles.success}>{success}</p>}
-        </div>
+            <div className={styles.container}>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="username">Nombre de usuario</label>
+                        <input className={styles.input} type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="manolito2004" />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="email">Correo electrónico</label>
+                        <input className={styles.input} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="manolito2004@gmail.com" />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="password">Contraseña</label>
+                        <input className={styles.input} type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="•••••••••••" />
+                    </div>
+                    <button className={styles.button} type="submit">Registrarse</button>
+                </form>
+                {error && <p className={styles.error}>{error}</p>}
+                {success && <p className={styles.success}>{success}</p>}
+            </div>
+        </>
     );
 }
