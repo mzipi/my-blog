@@ -1,0 +1,26 @@
+.post {
+    background-color: #2d3748;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.postContent {
+    font-size: 1rem;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.post:hover {
+    transform: scale(1.02);
+}

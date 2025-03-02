@@ -1,9 +1,7 @@
 .container {
-    padding: 2rem;
     background-color: #1f2937;
     color: white;
     justify-items: center;
-    min-height: 77vh;
 }
 
 .posts {
