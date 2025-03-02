@@ -4,21 +4,3 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
-
-.readMoreContainer {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    text-align: center;
-}
-
-.readMore {
-    text-decoration: none;
-    color: #e2e8f0;
-    font-weight: bold;
-}
-
-.readMore:hover {
-    color: #b0c4de;
-}

@@ -22,7 +22,7 @@ export default function PostComponent({ _id, title, content, tags }: PostProps) 
                 <p className={styles.postContent}>{content.slice(0, 300) + '...'}</p>
             </div>
             <div className={styles.readMoreContainer}>
-                <a href={`/entries/${_id}`} className="readMore">
+                <a href={`/entries/${_id}`} className={styles.readMore}>
                     Leer más
                 </a>
             </div>

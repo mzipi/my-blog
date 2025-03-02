@@ -24,3 +24,21 @@
 .post:hover {
     transform: scale(1.02);
 }
+
+.readMoreContainer {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.readMore {
+    text-decoration: none;
+    color: #e2e8f0;
+    font-weight: bold;
+}
+
+.readMore:hover {
+    color: #b0c4de;
+}
